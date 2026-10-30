@@ -1,0 +1,751 @@
+/*!
+ * YoduPlayer 2.7.0 — 玻璃拟态外观
+ * 所有颜色 / 透明度 / 动效都来自 #bgmplayer 上的 CSS 变量（由后台输出）。
+ * 想改默认值请改后台「外观」分组，不建议直接改这个文件。
+ */
+
+#bgmplayer {
+  --yd-ease: cubic-bezier(.22, .61, .36, 1);
+  position: fixed;
+  right: 18px;
+  top: var(--yd-top, 65px);
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--yd-text, #161b26);
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+
+#bgmplayer *,
+#bgmplayer *::before,
+#bgmplayer *::after {
+  box-sizing: border-box;
+}
+
+#bgmplayer button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+#bgmplayer button:focus-visible,
+#bgmplayer .yd-bar:focus-visible {
+  outline: 2px solid var(--yd-primary);
+  outline-offset: 3px;
+}
+
+/* 主题（Joe）会给按钮加聚焦圈，这里把鼠标点击后的那一圈压掉；
+   键盘 Tab 的 :focus-visible 仍然保留，不影响无障碍 */
+#bgmplayer button:focus:not(:focus-visible),
+#bgmplayer button:active:not(:focus-visible) {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#bgmplayer {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#bgmplayer svg {
+  display: block;
+}
+
+/* ---------------- 主按钮 ---------------- */
+.bgmbuttom {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background-image: linear-gradient(var(--yd-angle, 135deg), var(--yd-primary), var(--yd-secondary), var(--yd-primary));
+  background-size: 220% 220%;
+  box-shadow: 0 calc(8px * var(--yd-shadow, .6)) calc(22px * var(--yd-shadow, .6)) rgba(var(--yd-shadow-rgb), calc(.38 * var(--yd-shadow, .6)));
+  transition: transform .28s var(--yd-ease), box-shadow .28s var(--yd-ease);
+}
+
+/* 渐变流动（呼吸）只在播放时跑；暂停时保持静止，不再一直动 */
+#bgmplayer.is-playing .bgmbuttom {
+  animation: yd-flow var(--yd-flow, 9s) linear infinite;
+}
+
+.bgmbuttom:hover {
+  transform: translateY(-2px) scale(1.04);
+}
+
+.bgmbuttom:active {
+  transform: translateY(0) scale(.97);
+}
+
+.bgmbuttom .ydicon {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .18));
+}
+
+.yd-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  z-index: -1;
+  background: conic-gradient(from 0deg, var(--yd-primary), var(--yd-secondary), var(--yd-primary));
+  opacity: .55;
+  filter: blur(7px);
+}
+
+/* 播放中的呼吸光晕（非贴边时一直保留） */
+#bgmplayer.is-playing .yd-ring {
+  animation: yd-pulse 2.6s ease-in-out infinite;
+}
+
+/* 贴边模式：不要任何发光 */
+#bgmplayer[data-yd-edge="1"] .yd-ring {
+  opacity: 0;
+  animation: none;
+}
+
+/* ---------------- 面板 ---------------- */
+.bgmpanel {
+  position: absolute;
+  right: 0;
+  top: 58px;
+  width: 336px;
+  max-width: calc(100vw - 32px);
+  padding: 14px 14px 10px;
+  border-radius: var(--yd-radius, 18px);
+  border: 1px solid rgba(var(--yd-primary-rgb), .22);
+  color: var(--yd-text);
+  background-image:
+    linear-gradient(var(--yd-angle, 135deg), rgba(var(--yd-primary-rgb), .12), rgba(var(--yd-secondary-rgb), .10)),
+    linear-gradient(rgba(var(--yd-bg-rgb, 255, 255, 255), var(--yd-bg-alpha, .72)), rgba(var(--yd-bg-rgb, 255, 255, 255), var(--yd-bg-alpha, .72)));
+  -webkit-backdrop-filter: blur(var(--yd-blur, 14px)) saturate(1.2);
+  backdrop-filter: blur(var(--yd-blur, 14px)) saturate(1.2);
+  box-shadow:
+    0 calc(20px * var(--yd-shadow, .6)) calc(52px * var(--yd-shadow, .6)) rgba(var(--yd-shadow-rgb), calc(.30 * var(--yd-shadow, .6))),
+    inset 0 1px 0 rgba(255, 255, 255, .22);
+  transform-origin: top right;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(.96);
+  pointer-events: none;
+  transition: opacity .2s var(--yd-ease), transform .26s var(--yd-ease), visibility .2s;
+  z-index: 3;
+}
+
+#bgmplayer.bgmon .bgmpanel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+.yd-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.yd-cover {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(var(--yd-primary-rgb), .14);
+  box-shadow: 0 0 0 1px rgba(var(--yd-primary-rgb), .25), 0 4px 12px rgba(var(--yd-shadow-rgb), .18);
+}
+
+.yd-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#bgmplayer.is-playing .yd-cover img {
+  animation: yd-rotate var(--yd-cover-speed, 9s) linear infinite;
+}
+
+.yd-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* 歌词窗：有歌词时顶替标题/歌手，多行竖向滚动 + 两端渐隐 */
+.yd-lyric {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  overflow: hidden;
+  position: relative;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, .12) 12%, #000 34%, #000 66%, rgba(0, 0, 0, .12) 88%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, .12) 12%, #000 34%, #000 66%, rgba(0, 0, 0, .12) 88%, transparent 100%);
+}
+
+.yd-head.has-lyric .yd-meta {
+  display: none;
+}
+
+.yd-head.has-lyric .yd-lyric {
+  display: block;
+}
+
+/* 位移由 JS 每帧插值，这里不能再挂 transition，否则会互相打架 */
+.yd-lyric-inner {
+  will-change: transform;
+}
+
+.yd-lyric-line {
+  height: 16px;
+  line-height: 16px;
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: var(--yd-muted);
+  opacity: .45;
+  transition: opacity .4s var(--yd-ease), color .4s var(--yd-ease);
+}
+
+.yd-lyric-line.active {
+  color: var(--yd-text);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.yd-title {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yd-artist {
+  font-size: 11.5px;
+  color: var(--yd-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yd-time {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--yd-muted);
+}
+
+/* ---------------- 进度条 ---------------- */
+.yd-bar {
+  position: relative;
+  height: 18px;
+  margin: 12px 0 6px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.yd-bar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--yd-line);
+}
+
+.yd-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 4px;
+  width: 0;
+  border-radius: 99px;
+  transform: translateY(-50%);
+  background-image: linear-gradient(90deg, var(--yd-primary), var(--yd-secondary));
+  box-shadow: 0 0 10px rgba(var(--yd-primary-rgb), .45);
+  pointer-events: none;
+}
+
+.yd-bar-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(var(--yd-shadow-rgb), .35);
+  transform: translateY(-50%) scale(.6);
+  opacity: 0;
+  transition: opacity .16s, transform .16s;
+  pointer-events: none;
+}
+
+.yd-bar:hover .yd-bar-thumb,
+.yd-bar:focus-visible .yd-bar-thumb,
+#bgmplayer.is-seeking .yd-bar-thumb {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* ---------------- 控制区 ---------------- */
+.yd-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.yd-btns {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.yd-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--yd-text);
+  opacity: .82;
+  transition: background .18s, color .18s, opacity .18s, transform .18s;
+}
+
+.yd-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.yd-btn:hover {
+  opacity: 1;
+  color: var(--yd-primary);
+  background: rgba(var(--yd-primary-rgb), .12);
+}
+
+.yd-btn:active {
+  transform: scale(.92);
+}
+
+.yd-btn-main {
+  width: 42px;
+  height: 42px;
+  margin: 0 2px;
+  color: #fff;
+  opacity: 1;
+  background-image: linear-gradient(var(--yd-angle, 135deg), var(--yd-primary), var(--yd-secondary));
+  background-size: 160% 160%;
+  box-shadow: 0 6px 16px rgba(var(--yd-primary-rgb), .38);
+}
+
+.yd-btn-main:hover {
+  color: #fff;
+  background-image: linear-gradient(var(--yd-angle, 135deg), var(--yd-secondary), var(--yd-primary));
+}
+
+.yd-btn-main svg {
+  width: 20px;
+  height: 20px;
+}
+
+.yd-btn-aux {
+  width: 32px;
+  height: 32px;
+  opacity: .55;
+}
+
+/* 悬停时才提到和主按钮一样的亮度 */
+.yd-btn-aux:hover {
+  opacity: .9;
+}
+
+.yd-btn-aux svg {
+  width: 20px;
+  height: 20px;
+}
+
+.yd-btn.on {
+  opacity: 1;
+  color: var(--yd-primary);
+}
+
+/* ---------------- 音量 ---------------- */
+.yd-volume {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 6px;
+  border-left: 1px solid var(--yd-line);
+}
+
+.yd-vol {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 36px;
+  max-width: 72px;
+  height: 16px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.yd-vol::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 99px;
+  background: var(--yd-line);
+}
+
+.yd-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--yd-primary);
+  box-shadow: 0 0 0 3px rgba(var(--yd-primary-rgb), .18);
+}
+
+.yd-vol::-moz-range-track {
+  height: 3px;
+  border-radius: 99px;
+  background: var(--yd-line);
+}
+
+.yd-vol::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--yd-primary);
+}
+
+/* ---------------- 状态提示 ---------------- */
+.yd-status {
+  min-height: 0;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--yd-muted);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .2s, max-height .2s;
+}
+
+.yd-status.show {
+  opacity: 1;
+  max-height: 40px;
+}
+
+.yd-status.error {
+  color: #ff7a7a;
+}
+
+/* ---------------- 列表 ---------------- */
+.yd-list {
+  position: absolute;
+  right: 0;
+  top: calc(58px + var(--yd-list-offset, 0px));
+  width: 336px;
+  max-width: calc(100vw - 32px);
+  max-height: min(56vh, 420px);
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--yd-radius, 18px);
+  border: 1px solid rgba(var(--yd-primary-rgb), .2);
+  color: var(--yd-text);
+  background-image: linear-gradient(rgba(var(--yd-bg-rgb, 255, 255, 255), var(--yd-bg-alpha, .72)), rgba(var(--yd-bg-rgb, 255, 255, 255), var(--yd-bg-alpha, .72)));
+  -webkit-backdrop-filter: blur(calc(var(--yd-blur, 14px) + 2px)) saturate(1.15);
+  backdrop-filter: blur(calc(var(--yd-blur, 14px) + 2px)) saturate(1.15);
+  box-shadow: 0 calc(18px * var(--yd-shadow, .6)) calc(44px * var(--yd-shadow, .6)) rgba(var(--yd-shadow-rgb), calc(.26 * var(--yd-shadow, .6)));
+  z-index: 4;
+  animation: yd-fadein .22s var(--yd-ease);
+}
+
+.yd-list.yhidden {
+  display: none;
+}
+
+/* 滚动条做内缩胶囊：不贴圆角边缘，避免「探出去」的观感 */
+.yd-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--yd-primary-rgb), .35) transparent;
+}
+
+.yd-list::-webkit-scrollbar {
+  width: 12px;
+}
+
+.yd-list::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 10px 0;
+}
+
+.yd-list::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  border: 4px solid transparent;
+  border-radius: 999px;
+  background-color: rgba(var(--yd-primary-rgb), .35);
+  background-clip: padding-box;
+}
+
+.yd-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(var(--yd-primary-rgb), .55);
+}
+
+.yd-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background .16s;
+}
+
+.yd-list li:hover {
+  background: rgba(var(--yd-primary-rgb), .1);
+}
+
+.yd-list li.yd-playing {
+  background-image: linear-gradient(90deg, rgba(var(--yd-primary-rgb), .20), rgba(var(--yd-secondary-rgb), .14));
+  font-weight: 600;
+}
+
+.yd-list li.yd-playing .anum {
+  color: var(--yd-primary);
+}
+
+.yd-list .anum {
+  flex: 0 0 auto;
+  min-width: 22px;
+  color: var(--yd-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.yd-list .yd-song {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yd-list .artist {
+  flex: 0 1 auto;
+  max-width: 45%;
+  color: var(--yd-muted);
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yd-list .yd-list-tip {
+  justify-content: center;
+  color: var(--yd-muted);
+  font-size: 12px;
+  cursor: default;
+}
+
+.yd-list .yd-list-tip:hover {
+  background: none;
+}
+
+/* ---------------- 背景光晕 ---------------- */
+.yd-glow {
+  position: absolute;
+  right: -14px;
+  top: 50px;
+  width: 364px;
+  height: 210px;
+  border-radius: 32px;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(36px);
+  opacity: 0;
+  transition: opacity .35s var(--yd-ease);
+}
+
+/* 只有展开时才出现光晕；收起后原位置不能留一块光幕 */
+#bgmplayer.bgmon .yd-glow {
+  opacity: .55;
+}
+
+.yd-glow-img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.2);
+}
+
+/* ---------------- 动效 ---------------- */
+@keyframes yd-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes yd-hue {
+  to { filter: hue-rotate(360deg); }
+}
+
+@keyframes yd-rotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes yd-pulse {
+  0%, 100% { opacity: .45; }
+  50% { opacity: .8; }
+}
+
+@keyframes yd-fadein {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 色相循环：让渐变类元素绕色环转 */
+#bgmplayer.yd-hue .bgmbuttom {
+  animation: yd-hue var(--yd-hue-speed, 24s) linear infinite;
+}
+
+#bgmplayer.yd-hue.is-playing .bgmbuttom {
+  animation: yd-flow var(--yd-flow, 9s) linear infinite, yd-hue var(--yd-hue-speed, 24s) linear infinite;
+}
+
+#bgmplayer.yd-hue .yd-btn-main,
+#bgmplayer.yd-hue .yd-bar-fill,
+#bgmplayer.yd-hue .yd-list li.yd-playing {
+  animation: yd-hue var(--yd-hue-speed, 24s) linear infinite;
+}
+
+/* ---------------- 贴边自动隐藏（仅桌面） ---------------- */
+@media (hover: hover) and (pointer: fine) {
+  #bgmplayer[data-yd-edge="1"] {
+    right: 0;
+  }
+
+  /* 贴边态：固定的透明长方体，鼠标悬停/按下都不改变外观，点一下直接出面板 */
+  #bgmplayer[data-yd-edge="1"] .bgmbuttom,
+  #bgmplayer[data-yd-edge="1"] .bgmbuttom:hover,
+  #bgmplayer[data-yd-edge="1"] .bgmbuttom:active {
+    width: 30px;
+    height: 56px;
+    border-radius: 13px 0 0 13px;
+    transform: none;
+    opacity: 1;
+    color: var(--yd-text);
+    background-image: none;
+    background-color: rgba(var(--yd-bg-rgb), .38);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    backdrop-filter: blur(10px) saturate(1.1);
+    box-shadow: none;
+    animation: none;
+    transition: none;
+  }
+
+  #bgmplayer[data-yd-edge="1"] .bgmbuttom .ydicon {
+    width: 18px;
+    height: 18px;
+    opacity: .9;
+    filter: none;
+  }
+}
+
+/* ---------------- 移动端 ---------------- */
+@media (max-width: 767px) {
+  #bgmplayer[data-yd-hide="1"] {
+    display: none;
+  }
+
+  #bgmplayer {
+    right: 12px;
+  }
+
+  #bgmplayer[data-yd-mobile="compact"] .bgmpanel {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    top: auto;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    max-width: none;
+    transform-origin: bottom center;
+    transform: translateY(12px) scale(.98);
+    border-radius: 20px;
+  }
+
+  #bgmplayer[data-yd-mobile="compact"].bgmon .bgmpanel {
+    transform: none;
+  }
+
+  #bgmplayer[data-yd-mobile="compact"] .yd-list {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    top: auto;
+    width: auto;
+    max-width: none;
+    max-height: 58vh;
+    border-radius: 20px;
+  }
+
+  #bgmplayer[data-yd-mobile="compact"] .yd-glow {
+    display: none;
+  }
+
+  .yd-vol {
+    min-width: 28px;
+    max-width: 56px;
+  }
+
+  .bgmpanel,
+  .yd-list {
+    font-size: 13.5px;
+  }
+}
+
+/* ---------------- 无障碍 / 减少动效 ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  #bgmplayer *,
+  #bgmplayer *::before,
+  #bgmplayer *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

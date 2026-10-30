@@ -1,0 +1,19 @@
+# 依赖
+node_modules/
+vendor/
+
+# 运行时缓存（歌单 JSON 是接口生成的，不进仓库）
+cache/playlist/*.json
+cache/playlist/*.tmp
+
+# 日志与临时文件
+*.log
+*.bak
+.tmp/
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
