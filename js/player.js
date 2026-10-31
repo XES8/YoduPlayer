@@ -20,10 +20,10 @@
     prev: '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M8.4 14.8A1 1 0 0110 14v-2.8l5.4 3.6A1 1 0 0017 14V6a1 1 0 00-1.6-.8L10 8.8V6a1 1 0 00-1.6-.8l-6 4a1 1 0 000 1.6l6 4z"/></svg>',
     next: '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.6 5.2A1 1 0 003 6v8a1 1 0 001.6.8L10 11.2V14a1 1 0 001.6.8l6-4a1 1 0 000-1.6l-6-4A1 1 0 0010 6v2.8L4.6 5.2z"/></svg>',
     list: '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>',
-    sequence: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.9 10.4V13.6A4.6 4.6 0 0 1 15.3 18.2H8.7A4.6 4.6 0 0 1 4.1 13.6V10.4A4.6 4.6 0 0 1 8.7 5.8H14.6"/><path d="M14.6 3.9 16.8 5.8 14.6 7.7"/></svg>',
-    order: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.9 10.4V13.6A4.6 4.6 0 0 1 15.3 18.2H8.9"/><path d="M8.9 16.3 6.7 18.2 8.9 20.1"/><path d="M4.1 13.6V10.4A4.6 4.6 0 0 1 8.7 5.8H14.6"/><path d="M14.6 3.9 16.8 5.8 14.6 7.7"/></svg>',
-    random: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4l3 3l-3 3"/><path d="M18 20l3-3l-3-3"/><path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5"/><path d="M3 17h3a5 5 0 0 0 5-5a5 5 0 0 1 5-5h5"/></svg>',
-    single: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.9 10.4V13.6A4.6 4.6 0 0 1 15.3 18.2H8.7A4.6 4.6 0 0 1 4.1 13.6V10.4A4.6 4.6 0 0 1 8.7 5.8H14.6"/><path d="M14.6 3.9 16.8 5.8 14.6 7.7"/><text x="12" y="14.8" text-anchor="middle" font-size="8.4" font-weight="700" fill="currentColor" stroke="none">1</text></svg>',
+    sequence: '<svg class="yd-ico-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.9 10.4V13.6A4.6 4.6 0 0 1 15.3 18.2H8.7A4.6 4.6 0 0 1 4.1 13.6V10.4A4.6 4.6 0 0 1 8.7 5.8H14.6"/><path d="M14.6 3.9 16.8 5.8 14.6 7.7"/></svg>',
+    order: '<svg class="yd-ico-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.9 10.4V13.6A4.6 4.6 0 0 1 15.3 18.2H8.9"/><path d="M8.9 16.3 6.7 18.2 8.9 20.1"/><path d="M4.1 13.6V10.4A4.6 4.6 0 0 1 8.7 5.8H14.6"/><path d="M14.6 3.9 16.8 5.8 14.6 7.7"/></svg>',
+    random: '<svg class="yd-ico-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4l3 3l-3 3"/><path d="M18 20l3-3l-3-3"/><path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5"/><path d="M3 17h3a5 5 0 0 0 5-5a5 5 0 0 1 5-5h5"/></svg>',
+    single: '<svg class="yd-ico-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.9 10.4V13.6A4.6 4.6 0 0 1 15.3 18.2H8.7A4.6 4.6 0 0 1 4.1 13.6V10.4A4.6 4.6 0 0 1 8.7 5.8H14.6"/><path d="M14.6 3.9 16.8 5.8 14.6 7.7"/><text x="12" y="14.8" text-anchor="middle" font-size="8.4" font-weight="700" fill="currentColor" stroke="none">1</text></svg>',
     mute: '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9 3.5L5.5 6H3a1 1 0 00-1 1v6a1 1 0 001 1h2.5L9 16.5a1 1 0 001.5-.9V4.4A1 1 0 009 3.5zM13.3 7.3a1 1 0 00-1.4 1.4L13 10l-1.1 1.3a1 1 0 001.4 1.4L14.5 12l1.2 1.7a1 1 0 001.4-1.4L16 11l1.1-1.3a1 1 0 00-1.4-1.4L14.5 10l-1.2-1.7z"/></svg>',
     vol: '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9 3.5L5.5 6H3a1 1 0 00-1 1v6a1 1 0 001 1h2.5L9 16.5a1 1 0 001.5-.9V4.4A1 1 0 009 3.5z"/><path d="M12.5 6.5a1 1 0 011.4 0 5 5 0 010 7 1 1 0 11-1.4-1.4 3 3 0 000-4.2 1 1 0 010-1.4z"/></svg>'
   };
@@ -349,7 +349,7 @@
         continue;
       }
       // 过滤作词/作曲/编曲这类制作信息
-      if (/^(作词|作曲|编曲|制作|监制|混音|录音|吉他|贝斯|鼓|和声|发行|出品|母带|统筹|企划|营销|OP|SP)\s*[:：]/i.test(content)) {
+      if (/^(作词|作曲|编曲|词|曲|制作人|制作|出品人|出品|监制|策划|企划|统筹|宣发|营销|发行|版权|混音|录音|音频|母带|吉他|贝斯|鼓|打击乐|键盘|钢琴|弦乐|和声|编写|封面|设计|摄影|编辑|审核|OP|SP)\s*[:：]/i.test(content)) {
         continue;
       }
       for (var j = 0; j < times.length; j++) {

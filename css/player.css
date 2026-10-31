@@ -387,6 +387,26 @@
   height: 20px;
 }
 
+/* 有些主题会给 svg / path 强制加 fill，会把线性图标填成一坨；
+   这里用 !important 把线性图标钉回「只描边」 */
+#bgmplayer svg.yd-ico-line,
+#bgmplayer svg.yd-ico-line path,
+#bgmplayer svg.yd-ico-line rect,
+#bgmplayer svg.yd-ico-line circle {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+#bgmplayer svg.yd-ico-line text {
+  fill: currentColor !important;
+  stroke: none !important;
+}
+
+/* 实心图标反过来，防止主题加描边 */
+#bgmplayer svg:not(.yd-ico-line) {
+  stroke: none !important;
+}
+
 .yd-btn.on {
   opacity: 1;
   color: var(--yd-primary);

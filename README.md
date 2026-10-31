@@ -1,7 +1,7 @@
-# YoduPlayer 2.9.4 · 安装、配置与排错
+# YoduPlayer 2.9.5 · 安装、配置与排错
 
 > 一款清爽的 BGM 播放器，支持 instantclick 页面切换不中断播放。
-> 作者：OsAtNb　版本：2.9.4　协议：BSD-3-Clause（内置 Meting 为 MIT）
+> 作者：OsAtNb　版本：2.9.5　协议：BSD-3-Clause（内置 Meting 为 MIT）
 
 ---
 

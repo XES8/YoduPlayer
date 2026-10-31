@@ -4,12 +4,12 @@
  *
  * @package YoduPlayer
  * @author OsAtNb
- * @version 2.9.4
+ * @version 2.9.5
  * @link https://github.com/XES8/YoduPlayer
  */
 class YoduPlayer_Plugin implements Typecho_Plugin_Interface
 {
-    const VERSION = '2.9.4';
+    const VERSION = '2.9.5';
 
     /** 插件激活 */
     public static function activate()
